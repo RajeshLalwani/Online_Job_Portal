@@ -1,0 +1,484 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeFile="Guest.master.cs" Inherits="Users_Guest_Guest" %>
+
+<!DOCTYPE html>
+<html lang="en">
+<head runat="server">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%: Page.Title %> - Jobify</title>
+
+    <asp:PlaceHolder runat="server">
+        <%: Scripts.Render("~/bundles/modernizr") %>
+    </asp:PlaceHolder>
+    <webopt:BundleReference runat="server" Path="~/Content/css" />
+    <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+
+    <%-- Custom CSS for a professional, attractive, and dynamic feel --%>
+    <style>
+        /* --- Preloader Styles --- */
+        #preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(88, 24, 69, 0.9), rgba(121, 40, 202, 0.85));
+            z-index: 99999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 1;
+            visibility: visible;
+        }
+
+            #preloader.preloader-fade-out {
+                animation: fadeOut 3s ease forwards;
+            }
+
+        .preloader-container {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .spinner-ring {
+            width: 180px;
+            height: 180px;
+            border: 4px solid rgba(255, 255, 255, 0.2);
+            border-top-color: #ffffff;
+            border-radius: 50%;
+            position: absolute;
+            animation: spin 1.5s linear infinite;
+        }
+
+        .preloader-logo {
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+            .preloader-logo .glyphicon {
+                font-size: 48px;
+                margin-bottom: 10px;
+            }
+
+            .preloader-logo span:last-child {
+                font-weight: 600;
+                font-size: 36px;
+            }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes fadeOut {
+            from {
+                opacity: 1;
+            }
+
+            to {
+                opacity: 0;
+                visibility: hidden;
+            }
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                opacity: 0.8;
+            }
+
+            50% {
+                transform: scale(1.1);
+                opacity: 1;
+            }
+
+            100% {
+                transform: scale(1);
+                opacity: 0.8;
+            }
+        }
+
+        body {
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            background-color: #f8f9fa;
+            padding-top: 70px;
+        }
+
+        /* --- Modern Navbar Styling --- */
+        .navbar-custom {
+            background-color: #ffffff;
+            border: none;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+            transition: background-color 0.3s ease-in-out;
+        }
+
+            .navbar-custom .navbar-brand {
+                font-weight: 600;
+                font-size: 24px;
+                color: #7928ca !important;
+                display: flex;
+                align-items: center;
+                transition: transform 0.3s ease;
+            }
+
+                .navbar-custom .navbar-brand:hover {
+                    transform: scale(1.05);
+                }
+
+                .navbar-custom .navbar-brand .glyphicon {
+                    color: #7928ca;
+                    font-size: 0.9em;
+                    margin-right: 8px;
+                    transition: transform 0.3s ease;
+                }
+
+            .navbar-custom .navbar-nav > li > a {
+                color: #555;
+                font-weight: 500;
+                transition: color 0.3s ease;
+                position: relative;
+                padding-top: 25px;
+                padding-bottom: 25px;
+            }
+
+                .navbar-custom .navbar-nav > li > a:hover,
+                .navbar-custom .navbar-nav > .active > a {
+                    color: #7928ca;
+                    background-color: transparent;
+                }
+
+                .navbar-custom .navbar-nav > li > a:not(.btn-login)::after {
+                    content: '';
+                    position: absolute;
+                    bottom: 15px;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    width: 0;
+                    height: 2px;
+                    background: linear-gradient(135deg, #7928ca, #3a0ca3);
+                    transition: width 0.3s ease-in-out;
+                }
+
+                .navbar-custom .navbar-nav > li > a:not(.btn-login):hover::after,
+                .navbar-custom .navbar-nav > .active > a:not(.btn-login)::after {
+                    width: 70%;
+                }
+
+        /* --- Dropdown Styling --- */
+        .dropdown-menu {
+            border: none;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+            .dropdown-menu > li > a {
+                color: #555;
+                font-weight: 500;
+                transition: background-color 0.2s ease, color 0.2s ease;
+            }
+
+                .dropdown-menu > li > a:hover {
+                    background-image: linear-gradient(135deg, #7928ca, #3a0ca3);
+                    color: #fff;
+                }
+
+        .navbar-custom .navbar-nav .btn-login {
+            color: #fff !important;
+            border-radius: 50px;
+            padding: 8px 20px;
+            margin-top: 15px;
+            transition: all 0.4s ease;
+            background-image: linear-gradient(135deg, #7928ca, #3a0ca3);
+            background-size: 200% auto;
+        }
+
+            .navbar-custom .navbar-nav .btn-login:hover {
+                background-position: right center;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+            }
+
+        .glyphicon {
+            margin-right: 5px;
+        }
+
+        /* --- Attractive Footer Styling --- */
+        .site-footer {
+            background-color: #26272b;
+            padding: 45px 0 20px;
+            font-size: 15px;
+            line-height: 24px;
+            color: #737373;
+        }
+
+            .site-footer hr {
+                border-top-color: #bbb;
+                opacity: 0.5;
+            }
+
+            .site-footer h6 {
+                color: #fff;
+                font-size: 16px;
+                text-transform: uppercase;
+                margin-top: 5px;
+                letter-spacing: 2px;
+            }
+
+            .site-footer a {
+                color: #737373;
+                transition: color 0.3s ease;
+            }
+
+                .site-footer a:hover {
+                    color: #7928ca;
+                    text-decoration: none;
+                }
+
+        .footer-links {
+            padding-left: 0;
+            list-style: none;
+        }
+
+            .footer-links li {
+                display: block;
+                margin-bottom: 10px;
+            }
+
+        .footer-logo {
+            font-size: 28px;
+            font-weight: 600;
+            color: #7928ca !important;
+            margin-bottom: 15px;
+            display: inline-block;
+        }
+
+        .copyright-text {
+            margin: 0;
+        }
+
+        .social-icons {
+            text-align: right;
+            padding-left: 0;
+            list-style: none;
+        }
+
+            .social-icons li {
+                display: inline-block;
+                margin-bottom: 4px;
+                margin-left: 10px;
+            }
+            /* UPDATED to support SVG icons */
+            .social-icons a {
+                background-color: #33353d;
+                color: #818a91;
+                display: inline-flex; /* Use flexbox to center SVG */
+                justify-content: center;
+                align-items: center;
+                width: 44px;
+                height: 44px;
+                border-radius: 100%;
+                transition: all .2s linear;
+            }
+
+                .social-icons a:hover {
+                    color: #fff;
+                    background-color: #7928ca;
+                }
+                /* NEW style for SVGs inside social links */
+                .social-icons a svg {
+                    width: 20px;
+                    height: 20px;
+                    fill: currentColor; /* SVG color will inherit from the 'a' tag color */
+                }
+
+        @media (max-width:767px) {
+            .social-icons {
+                text-align: center;
+                margin-top: 20px;
+            }
+        }
+
+         html, body, form#form1 {
+            overflow: visible !important;
+        }
+        .body-content {
+            overflow: visible !important;
+        }
+    </style>
+</head>
+<body>
+    <!-- PRELOADER MARKUP -->
+    <div id="preloader">
+        <div class="preloader-container">
+            <div class="spinner-ring"></div>
+            <div class="preloader-logo">
+                <span class="glyphicon glyphicon-briefcase"></span>
+                <span>Jobify</span>
+            </div>
+        </div>
+    </div>
+
+    <form runat="server" id="form1">
+        <asp:ScriptManager runat="server">
+            <Scripts>
+                <asp:ScriptReference Name="MsAjaxBundle" />
+                <asp:ScriptReference Name="jquery" />
+                <asp:ScriptReference Name="bootstrap" />
+                <asp:ScriptReference Name="WebForms.js" Assembly="System.Web" Path="~/Scripts/WebForms/WebForms.js" />
+                <asp:ScriptReference Name="WebUIValidation.js" Assembly="System.Web" Path="~/Scripts/WebForms/WebUIValidation.js" />
+                <asp:ScriptReference Name="WebFormsBundle" />
+            </Scripts>
+        </asp:ScriptManager>
+
+
+        <script src="../../Scripts/sweetalert2.all.min.js"></script>
+        <link href="../../Scripts/sweetalert2.min.css" rel="stylesheet" />
+        <script src="../../Scripts/sweetalert2.js"></script>
+        <script src="../../Scripts/sweetalert2.min.js"></script>
+
+        <%-- Updated Navbar for Guest User --%>
+        <div class="navbar navbar-default navbar-fixed-top navbar-custom">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" runat="server" href="~/Users/Guest/Home">
+                        <span class="glyphicon glyphicon-briefcase"></span>Jobify
+                    </a>
+                </div>
+                <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav">
+                        <li><a runat="server" href="~/Users/Guest/Home">Home</a></li>
+                        <li><a runat="server" href="~/Users/Guest/FindJobs.aspx">Find Jobs</a></li>
+                        <li><a runat="server" href="~/Users/Guest/Feedback.aspx">Feedback</a></li>
+                        <li><a runat="server" href="~/Users/Guest/Contact.aspx">Contact</a></li>
+                        <li><a runat="server" href="~/Users/Guest/About.aspx">About Us</a></li>
+                        <li><a runat="server" href="~/Users/Guest/Privacy_Policy.aspx">Privacy Policy</a></li>
+                    </ul>
+
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                <span class="glyphicon glyphicon-user"></span>Register <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a runat="server" href="~/Account/RegisterSeeker.aspx"><span class="glyphicon glyphicon-user"></span>Job Seeker Registration</a></li>
+                                <li><a runat="server" href="~/Account/RegisterCompany.aspx"><span class="glyphicon glyphicon-tower"></span>Company Registration</a></li>
+                            </ul>
+                        </li>
+                        <li><a runat="server" class="btn-login" href="~/Account/Login">Log in</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container body-content">
+            <asp:ContentPlaceHolder ID="MainContent" runat="server">
+            </asp:ContentPlaceHolder>
+        </div>
+
+        <!-- ATTRACTIVE FOOTER (UPDATED) -->
+        <footer class="site-footer">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-12 col-md-6">
+                        <h6>About</h6>
+                        <a class="footer-logo" href="#"><span class="glyphicon glyphicon-briefcase"></span>Jobify</a>
+                        <p class="text-justify">Jobify is a premier IT job portal dedicated to connecting talented tech professionals with innovative companies. Our mission is to streamline the hiring process and help build the future of technology, one successful placement at a time.</p>
+                    </div>
+
+                    <div class="col-xs-6 col-md-3">
+                        <h6>For Candidates</h6>
+                        <ul class="footer-links">
+                            <li><a href="#">Find Jobs</a></li>
+                            <li><a href="#">Create Profile</a></li>
+                            <li><a href="#">Job Alerts</a></li>
+                            <li><a href="#">Career Advice</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="col-xs-6 col-md-3">
+                        <h6>Quick Links</h6>
+                        <ul class="footer-links">
+                            <li><a href="#">About Us</a></li>
+                            <li><a href="#">Contact Us</a></li>
+                            <li><a href="#">Feedback</a></li>
+                            <li><a href="#">Privacy Policy</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <hr>
+            </div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-8 col-sm-6 col-xs-12">
+                        <p class="copyright-text">
+                            Copyright &copy; <%: DateTime.Now.Year %> All Rights Reserved by 
+                            <a href="#">Jobify</a>.
+                        </p>
+                    </div>
+
+                    <div class="col-md-4 col-sm-6 col-xs-12">
+                        <!-- UPDATED SOCIAL ICONS with INLINE SVGs -->
+                        <ul class="social-icons">
+                            <li><a class="facebook" href="#" title="Facebook">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                    <path d="M12 2.04c-5.5 0-10 4.49-10 10s4.5 10 10 10 10-4.49 10-10-4.5-10-10-10zm2.25 10.28h-1.5v5.47h-2.25v-5.47H9.25v-2h1.25v-1.29c0-1.1.53-2.71 2.71-2.71h1.79v2h-1.09c-.45 0-.56.22-.56.56v1.44h1.64l-.23 2z" />
+                                </svg></a></li>
+                            <li><a class="instagram" href="#" title="Instagram">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                    <path d="M12 2c-2.72 0-3.05.01-4.12.06-1.06.05-1.79.23-2.43.48-.65.25-1.13.59-1.62 1.08-.49.49-.83.97-1.08 1.62-.25.64-.43 1.37-.48 2.43-.05 1.07-.06 1.4-.06 4.12s.01 3.05.06 4.12c.05 1.06.23 1.79.48 2.43.25.65.59 1.13 1.08 1.62.49.49.97.83 1.62 1.08.64.25 1.37.43 2.43.48 1.07.05 1.4.06 4.12.06s3.05-.01 4.12-.06c1.06-.05 1.79-.23 2.43-.48.65-.25 1.13-.59 1.62-1.08.49-.49.83-.97 1.08-1.62.25-.64.43-1.37.48-2.43.05-1.07.06-1.4.06-4.12s-.01-3.05-.06-4.12c-.05-1.06-.23-1.79-.48-2.43-.25-.65-.59-1.13-1.08-1.62-.49-.49-.97-.83-1.62-1.08-.64-.25-1.37-.43-2.43-.48C15.05 2.01 14.72 2 12 2zm0 1.8c2.67 0 2.98.01 4.04.06.99.04 1.5.22 1.84.35.42.16.72.36.98.62s.46.56.62.98c.13.34.31.85.35 1.84.05 1.06.06 1.37.06 4.04s-.01 2.98-.06 4.04c-.04.99-.22 1.5-.35 1.84-.16.42-.36.72-.62.98s-.56.46-.98.62c-.34.13-.85.31-1.84.35-1.06.05-1.37.06-4.04.06s-2.98-.01-4.04-.06c-.99-.04-1.5-.22-1.84-.35-.42-.16-.72-.36-.98-.62s-.46-.56-.62-.98c-.13-.34-.31-.85-.35-1.84-.05-1.06-.06-1.37-.06-4.04s.01-2.98.06-4.04c.04-.99.22-1.5.35-1.84.16-.42.36-.72.62-.98s.56-.46.98-.62c.34-.13.85-.31 1.84-.35C9.02 3.81 9.33 3.8 12 3.8zm0 3.6c-2.48 0-4.48 2-4.48 4.48s2 4.48 4.48 4.48 4.48-2 4.48-4.48-2-4.48-4.48-4.48zm0 7.16c-1.48 0-2.68-1.2-2.68-2.68s1.2-2.68 2.68-2.68 2.68 1.2 2.68 2.68-1.2 2.68-2.68 2.68zm4.24-7.4c0 .52-.42.94-.94.94s-.94-.42-.94-.94.42-.94.94-.94.94.42.94.94z" />
+                                </svg></a></li>
+                            <li><a class="twitter" href="#" title="Twitter">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                    <path d="M22.46 6c-.77.35-1.6.58-2.46.67.88-.53 1.56-1.37 1.88-2.38-.83.5-1.75.85-2.72 1.05C18.37 4.5 17.26 4 16 4c-2.35 0-4.27 1.92-4.27 4.29 0 .34.04.67.11.98C8.28 9.09 5.11 7.38 3 4.79c-.37.63-.58 1.37-.58 2.15 0 1.49.75 2.81 1.91 3.56-.71 0-1.37-.22-1.95-.55v.03c0 2.08 1.48 3.82 3.44 4.21a4.22 4.22 0 0 1-1.94.07c.54 1.7 2.1 2.93 3.96 2.96-1.46 1.14-3.3 1.82-5.3 1.82-.34 0-.68-.02-1.02-.06C3.44 20.29 5.7 21 8.12 21c7.34 0 11.35-6.08 11.35-11.35 0-.17 0-.34-.01-.51.78-.57 1.45-1.27 1.99-2.06z" />
+                                </svg></a></li>
+                            <li><a class="whatsapp" href="#" title="WhatsApp">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                    <path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.38 1.25 4.81L2 22l5.42-1.4c1.37.71 2.92 1.12 4.58 1.12h.01c5.46 0 9.91-4.45 9.91-9.91s-4.45-9.91-9.91-9.91zM17.49 14.88c-.22-.11-.74-.36-1.03-.51-.29-.15-.5-.11-.71.11-.21.22-.39.51-.48.61-.09.1-.18.11-.33.06-.15-.05-1.03-.38-1.95-1.2-1.12-1-1.65-1.65-1.84-1.93-.19-.28-.02-.43.09-.54.1-.1.22-.26.33-.39.11-.13.15-.22.22-.36.07-.15.04-.28-.02-.39-.05-.11-.71-1.7-.97-2.32-.25-.6-.52-.51-.71-.51h-.21c-.22 0-.5.09-.61.22-.11.13-.5.48-.5 1.2 0 .71.51 1.38.58 1.48.07.1.99 1.58 2.4 2.2.34.15.6.24.81.31.29.09.55.08.75.05.22-.04.74-.3.84-.58.1-.28.1-.54.07-.58l-.01-.04z" />
+                                </svg></a></li>
+                            <li><a class="linkedin" href="#" title="LinkedIn">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                    <path d="M20.45 2h-16.9C2.69 2 2 2.7 2 3.55v16.9C2 21.3 2.69 22 3.55 22h16.9c.86 0 1.55-.7 1.55-1.55V3.55C22 2.7 21.31 2 20.45 2zM8.07 18.78H5.45V9.93h2.62v8.85zm-1.31-9.9c-.83 0-1.5-.68-1.5-1.51s.67-1.51 1.5-1.51 1.5.68 1.5 1.51-.67 1.51-1.5 1.51zm11 9.9h-2.62v-4.3c0-1.02-.02-2.34-1.42-2.34-1.43 0-1.65 1.11-1.65 2.26v4.38H9.45V9.93h2.51v1.16h.04c.35-.66 1.2-1.36 2.48-1.36 2.65 0 3.14 1.74 3.14 4v4.65z" />
+                                </svg></a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </form>
+
+    <!-- PRELOADER SCRIPT -->
+    <script type="text/javascript">
+        window.addEventListener('load', function () {
+            const preloader = document.getElementById('preloader');
+            if (preloader) {
+                preloader.classList.add('preloader-fade-out');
+            }
+        });
+    </script>
+
+    <!-- SCRIPT FOR ACTIVE NAV LINK -->
+    <script type="text/javascript">
+        $(function () {
+            var url = window.location.pathname;
+            var page = url.substring(url.lastIndexOf('/') + 1);
+            $('.navbar-nav li a').each(function () {
+                var link = $(this).attr('href');
+                if (link && link.indexOf(page) > -1) {
+                    $(this).parent().addClass('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+

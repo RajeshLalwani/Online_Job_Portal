@@ -1,0 +1,364 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeFile="Job_Seeker.master.cs" Inherits="Users_Job_Seeker_Job_Seeker" %>
+
+<!DOCTYPE html>
+<html lang="en">
+<head runat="server">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%: Page.Title %> - Jobify</title>
+
+    <asp:PlaceHolder runat="server">
+        <%: Scripts.Render("~/bundles/modernizr") %>
+    </asp:PlaceHolder>
+    <webopt:bundlereference runat="server" path="~/Content/css" />
+    <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+
+    <%-- Custom CSS for Job Seeker Dashboard - Consistent with Guest Theme --%>
+    <style>
+        body {
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            background-color: #f8f9fa;
+            padding-top: 70px;
+        }
+
+        /* --- Navbar Styling --- */
+        .navbar-custom {
+            background-color: #ffffff;
+            border: none;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+            transition: background-color 0.3s ease-in-out;
+        }
+
+        .navbar-custom .navbar-brand {
+            font-weight: 600;
+            font-size: 24px;
+            color: #5d22b3 !important; /* Main Purple */
+            display: flex;
+            align-items: center;
+            transition: transform 0.3s ease;
+        }
+        
+        .navbar-custom .navbar-brand:hover {
+            transform: scale(1.05);
+        }
+
+        .navbar-custom .navbar-brand .glyphicon {
+            margin-right: 10px;
+            font-size: 0.9em;
+            color: #5d22b3; /* Main Purple */
+        }
+
+        .navbar-custom .navbar-nav > li > a {
+            color: #555;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            position: relative;
+            padding-top: 25px;
+            padding-bottom: 25px;
+        }
+
+        .navbar-custom .navbar-nav > li > a:hover,
+        .navbar-custom .navbar-nav > .open > a,
+        .navbar-custom .navbar-nav > .open > a:hover,
+        .navbar-custom .navbar-nav > .open > a:focus {
+            color: #5d22b3;
+            background-color: transparent;
+        }
+
+        .navbar-custom .navbar-nav > li > a::after {
+            content: '';
+            position: absolute;
+            bottom: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 2px;
+            background: linear-gradient(135deg, #7928ca, #5d22b3);
+            transition: width 0.3s ease-in-out;
+        }
+
+        .navbar-custom .navbar-nav > li > a:hover::after,
+        .navbar-custom .navbar-nav > .active > a::after {
+            width: 70%;
+        }
+        
+        .navbar-custom .navbar-nav > .active > a {
+            background-color: transparent !important;
+            color: #5d22b3 !important;
+        }
+
+        /* --- Dropdown Styling --- */
+        .dropdown-menu {
+            border: none;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        .dropdown-menu > li > a {
+            color: #555;
+            font-weight: 500;
+            transition: background-color 0.2s ease, color 0.2s ease;
+        }
+
+        .dropdown-menu > li > a:hover {
+            background-image: linear-gradient(135deg, #7928ca, #5d22b3);
+            color: #fff;
+        }
+        
+        .dropdown-menu .glyphicon {
+            margin-right: 10px;
+            color: #7928ca;
+        }
+        .dropdown-menu > li > a:hover .glyphicon {
+            color: #fff;
+        }
+
+        /* --- Footer Styling --- */
+        .main-footer {
+            background-color: #1e1247;
+            color: #adb5bd;
+            padding: 60px 0 20px 0;
+            margin-top: 50px;
+        }
+
+        .footer-column h4 {
+            color: #fff;
+            font-weight: 600;
+            margin-bottom: 25px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .footer-column h4::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 2px;
+            background: linear-gradient(135deg, #7928ca, #5d22b3);
+        }
+
+        .footer-column p, .footer-column a {
+            color: #adb5bd;
+            transition: color 0.3s ease;
+            line-height: 1.8;
+        }
+
+        .footer-column a:hover {
+            color: #fff;
+            text-decoration: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+        
+        .social-icons {
+            padding: 0;
+            list-style: none;
+            margin-top: 20px;
+        }
+
+        .social-icons li {
+            display: inline-block;
+            margin-right: 15px;
+        }
+        
+        .social-icons a {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            line-height: 40px;
+            text-align: center;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            transition: all 0.3s ease;
+        }
+
+        .social-icons a:hover {
+            background: linear-gradient(135deg, #7928ca, #5d22b3);
+            transform: translateY(-3px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+        
+        .social-icons svg {
+             width: 18px;
+             height: 18px;
+             vertical-align: middle;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 20px;
+            margin-top: 40px;
+            text-align: center;
+            font-size: 0.9em;
+        }
+
+        /*html, body, form {
+            overflow: visible !important;
+        }
+        .body-content {
+            overflow: visible !important; 
+        }*/
+
+          /* DEFINITIVE FIX FOR STICKY POSITIONING */
+        html, body, form#form1 {
+            overflow: visible !important;
+        }
+        .body-content {
+            overflow: visible !important;
+        }
+    </style>
+</head>
+<body>
+    <form runat="server" id="form1">
+        <%-- Preloader will not be included here as it's typically for initial site load, not for logged-in areas --%>
+        
+        <asp:ScriptManager runat="server">
+            <Scripts>
+                <asp:ScriptReference Name="MsAjaxBundle" />
+                <asp:ScriptReference Name="jquery" />
+                <asp:ScriptReference Name="bootstrap" />
+                <asp:ScriptReference Name="WebForms.js" Assembly="System.Web" Path="~/Scripts/WebForms/WebForms.js" />
+                <asp:ScriptReference Name="WebUIValidation.js" Assembly="System.Web" Path="~/Scripts/WebForms/WebUIValidation.js" />
+                <asp:ScriptReference Name="WebFormsBundle" />
+            </Scripts>
+        </asp:ScriptManager>
+        <script src="../../Scripts/sweetalert2.all.min.js"></script>
+
+        <%-- Updated Navbar for Logged-In Job Seeker --%>
+        <div class="navbar navbar-default navbar-fixed-top navbar-custom">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" runat="server" href="~/Users/Job_Seeker/Home">
+                        <span class="glyphicon glyphicon-briefcase"></span> Jobify
+                    </a>
+                </div>
+                <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav">
+                        <li><a runat="server" href="~/Users/Job_Seeker/Home">Home</a></li>
+                        <li><a runat="server" href="~/Users/Job_Seeker/FindJobs.aspx">Find Jobs</a></li>
+                        <li><a runat="server" href="~/Users/Job_Seeker/AppliedJobs.aspx">Applied Jobs</a></li>
+                        <li><a runat="server" href="~/Users/Job_Seeker/FeedBack.aspx">Feedback</a></li>
+                        <li><a runat="server" href="~/Users/Job_Seeker/Contact.aspx">Contact</a></li>
+                        <li><a runat="server" href="~/Users/Job_Seeker/About.aspx">About US</a></li>
+                        <li><a runat="server" href="~/Users/Job_Seeker/Privacy_Policy.aspx">Privacy Policy</a></li>
+                    </ul>
+
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a runat="server" href="~/Users/Job_Seeker/ChangePassword.aspx">Change Password</a></li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                <span class="glyphicon glyphicon-user"></span> Hello, <%: Session["Email"] != null ? Session["Email"].ToString().Split('@')[0] : "User" %> <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a runat="server" href="~/Users/Job_Seeker/View_Profile.aspx"><span class="glyphicon glyphicon-eye-open"></span> View Profile</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li>
+                                    <asp:LinkButton ID="btnLogout" runat="server" OnClick="btnLogout_Click" CausesValidation="false">
+                                        <span class="glyphicon glyphicon-log-out"></span> Log out
+                                    </asp:LinkButton>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container body-content">
+            <asp:ContentPlaceHolder ID="MainContent" runat="server">
+            </asp:ContentPlaceHolder>
+        </div>
+
+        <%-- NEW Professional Footer --%>
+        <footer class="main-footer">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-4 footer-column">
+                        <h4><span class="glyphicon glyphicon-briefcase" style="margin-right:10px;"></span>Jobify</h4>
+                        <p>Jobify is a premier IT job portal dedicated to connecting talented tech professionals with innovative companies. Our mission is to streamline the hiring process and help build the future of technology.</p>
+                         <ul class="social-icons">
+                             <li><a href="#" aria-label="Facebook"><svg viewBox="0 0 512 512" fill="currentColor"><path d="M504 256C504 119 393 8 256 8S8 119 8 256c0 123.78 90.69 226.38 209.25 245V327.69h-63V256h63v-54.64c0-62.15 37-96.48 93.67-96.48 27.14 0 55.52 4.84 55.52 4.84v61h-31.28c-30.8 0-40.41 19.12-40.41 38.73V256h68.78l-11 71.69h-57.78V501C413.31 482.38 504 379.78 504 256z"></path></svg></a></li>
+                             <li><a href="#" aria-label="Instagram"><svg viewBox="0 0 448 512" fill="currentColor"><path d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9 26.3 26.2 58 34.4 93.9 36.2 37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"></path></svg></a></li>
+                             <li><a href="#" aria-label="Twitter"><svg viewBox="0 0 512 512" fill="currentColor"><path d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253z"></path></svg></a></li>
+                             <li><a href="#" aria-label="WhatsApp"><svg viewBox="0 0 448 512" fill="currentColor"><path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.8 0-67.6-9.5-97.8-26.7l-7-4.1-72.5 19 19.3-71.1-4.5-7.4c-18.5-30.4-28.2-65.7-28.2-101.7 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"></path></svg></a></li>
+                             <li><a href="#" aria-label="LinkedIn"><svg viewBox="0 0 448 512" fill="currentColor"><path d="M100.28 448H7.4V148.9h92.88zM53.79 108.1C24.09 108.1 0 83.5 0 53.8a53.79 53.79 0 0 1 107.58 0c0 29.7-24.1 54.3-53.79 54.3zM447.9 448h-92.68V302.4c0-34.7-.7-79.2-48.29-79.2-48.29 0-55.69 37.7-55.69 76.7V448h-92.78V148.9h89.08v40.8h1.3c12.4-23.5 42.69-48.3 87.88-48.3 94 0 111.28 61.9 111.28 142.3V448z"></path></svg></a></li>
+                         </ul>
+                    </div>
+                    <div class="col-md-2 col-sm-6 footer-column">
+                        <h4>For Candidates</h4>
+                        <ul class="list-unstyled footer-links">
+                            <li><a href="~/Users/Job_Seeker/FindJobs.aspx">Find Jobs</a></li>
+                            <li><a href="~/Users/Job_Seeker/View_Profile.aspx">Create Profile</a></li>
+                            <li><a href="#">Job Alerts</a></li>
+                            <li><a href="#">Career Advice</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-md-2 col-sm-6 footer-column">
+                        <h4>For Employers</h4>
+                        <ul class="list-unstyled footer-links">
+                            <li><a href="#">Post a Job</a></li>
+                            <li><a href="#">Browse Resumes</a></li>
+                            <li><a href="#">Pricing</a></li>
+                            <li><a href="#">Hiring Solutions</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-md-4 footer-column">
+                        <h4>Contact Us</h4>
+                        <p><span class="glyphicon glyphicon-map-marker" style="margin-right:10px;"></span>Anand, Gujarat, India - 388001</p>
+                        <p><span class="glyphicon glyphicon-earphone" style="margin-right:10px;"></span><a href="tel:+918488984951">+91 84889 84951</a></p>
+                        <p><span class="glyphicon glyphicon-envelope" style="margin-right:10px;"></span><a href="mailto:support@jobify.com">support@jobify.com</a></p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="footer-bottom">
+                            <p>&copy; <%: DateTime.Now.Year %> - Jobify. All Rights Reserved. | <a href="~/Users/Guest/PrivacyPolicy.aspx">Privacy Policy</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+        
+    </form>
+
+     <%-- JavaScript to handle active page highlighting in navbar --%>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var path = window.location.pathname;
+            path = path.replace(/\/$/, "");
+            path = decodeURIComponent(path);
+
+            $('.navbar-nav a').each(function () {
+                var href = $(this).attr('href');
+                if (path.substring(0, href.length) === href) {
+                    $(this).closest('li').addClass('active');
+                }
+            });
+        });
+    </script>
+
+       <!-- SCRIPT FOR ACTIVE NAV LINK -->
+    <script type="text/javascript">
+        $(function () {
+            var url = window.location.pathname;
+            var page = url.substring(url.lastIndexOf('/') + 1);
+            $('.navbar-nav li a').each(function () {
+                var link = $(this).attr('href');
+                if (link && link.indexOf(page) > -1) {
+                    $(this).parent().addClass('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
