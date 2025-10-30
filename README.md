@@ -30,7 +30,7 @@ Generate reports for all Job Seekers and Employers, including status-wise totals
 
 Export all reports to a professional CSV file, including a "Grand Total" summary row.
 
-2. Employer Module (The Recruiter)
+## 2. Employer Module (The Recruiter)
 
 A complete portal for companies to find and manage talent:
 
@@ -60,7 +60,7 @@ View applicant profiles and download their resumes.
 
 Security: Dedicated "Change Password" page (separate from "Edit Profile").
 
-3. Job Seeker & Guest Module (The Candidate)
+## 3. Job Seeker & Guest Module (The Candidate)
 
 A professional and intuitive interface for job hunting:
 
