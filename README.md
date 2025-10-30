@@ -8,7 +8,7 @@ Key Features
 
 The platform is divided into three main modules:
 
-1. Admin Module (The Control Panel)
+## 1. Admin Module (The Control Panel)
 
 A powerful backend dashboard for complete site management:
 
