@@ -1,0 +1,242 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeFile="Admin.master.cs" Inherits="Users_Admin_Admin" %>
+
+<!DOCTYPE html>
+<html lang="en">
+<head runat="server">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%: Page.Title %> - Jobify Admin</title>
+
+    <asp:PlaceHolder runat="server">
+        <%: Scripts.Render("~/bundles/modernizr") %>
+    </asp:PlaceHolder>
+    <webopt:bundlereference runat="server" path="~/Content/css" />
+    <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+
+    <%-- Custom CSS for Admin Panel - Consistent with Site Theme --%>
+    <style>
+        body {
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            background-color: #f8f9fa;
+            padding-top: 70px;
+        }
+        
+        /* CORRECTED: This rule ensures sticky positioning works correctly in child pages. */
+
+          html, body, form {
+            overflow: visible !important;
+        }
+
+        .body-content {
+            overflow: visible !important; 
+        }
+
+        /* --- Navbar Styling --- */
+        .navbar-custom {
+            background-color: #ffffff;
+            border: none;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+        }
+
+        .navbar-custom .navbar-brand {
+            font-weight: 600;
+            font-size: 24px;
+            color: #5d22b3 !important;
+            display: flex;
+            align-items: center;
+            transition: transform 0.3s ease;
+        }
+        
+        .navbar-custom .navbar-brand:hover {
+            transform: scale(1.05);
+        }
+
+        .navbar-custom .navbar-brand .glyphicon {
+            margin-right: 10px;
+            font-size: 0.9em;
+        }
+
+        .navbar-custom .navbar-nav > li > a {
+            color: #555;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            position: relative;
+            padding-top: 25px;
+            padding-bottom: 25px;
+        }
+
+        .navbar-custom .navbar-nav > li > a:hover,
+        .navbar-custom .navbar-nav > .open > a,
+        .navbar-custom .navbar-nav > .open > a:hover,
+        .navbar-custom .navbar-nav > .open > a:focus {
+            color: #5d22b3;
+            background-color: transparent;
+        }
+
+        .navbar-custom .navbar-nav > li > a::after {
+            content: '';
+            position: absolute;
+            bottom: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 2px;
+            background: linear-gradient(135deg, #7928ca, #5d22b3);
+            transition: width 0.3s ease-in-out;
+        }
+
+        .navbar-custom .navbar-nav > li > a:hover::after,
+        .navbar-custom .navbar-nav > .active > a::after {
+            width: 70%;
+        }
+        
+        .navbar-custom .navbar-nav > .active > a {
+            background-color: transparent !important;
+            color: #5d22b3 !important;
+        }
+
+        /* --- Dropdown Styling --- */
+        .dropdown-menu {
+            border: none;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        .dropdown-menu > li > a {
+            color: #555;
+            font-weight: 500;
+            transition: background-color 0.2s ease, color 0.2s ease;
+        }
+
+        .dropdown-menu > li > a:hover {
+            background-image: linear-gradient(135deg, #7928ca, #5d22b3);
+            color: #fff;
+        }
+        
+        .dropdown-menu .glyphicon {
+            margin-right: 10px;
+            color: #7928ca;
+        }
+        .dropdown-menu > li > a:hover .glyphicon {
+            color: #fff;
+        }
+
+        /* --- Footer Styling --- */
+        .main-footer {
+            background-color: #1e1247;
+            color: #adb5bd;
+            padding: 60px 0 20px 0;
+            margin-top: 50px;
+        }
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 20px;
+            margin-top: 40px;
+            text-align: center;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <form runat="server">
+        <asp:ScriptManager runat="server">
+            <Scripts>
+                <asp:ScriptReference Name="MsAjaxBundle" />
+                <asp:ScriptReference Name="jquery" />
+                <asp:ScriptReference Name="bootstrap" />
+                <asp:ScriptReference Name="WebFormsBundle" />
+            </Scripts>
+        </asp:ScriptManager>
+        <script src="../../Scripts/sweetalert2.all.min.js"></script>
+
+        <div class="navbar navbar-default navbar-fixed-top navbar-custom">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" runat="server" href="~/Users/Admin/Home.aspx">
+                        <span class="glyphicon glyphicon-briefcase"></span> Jobify Admin
+                    </a>
+                </div>
+                <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav">
+                        <li><a runat="server" href="~/Users/Admin/Home.aspx">Dashboard</a></li>
+                        <li><a runat="server" href="~/Users/Admin/UserManagement.aspx">User Management</a></li>
+                        <li><a runat="server" href="~/Users/Admin/JobManagement.aspx">Job Listings</a></li>
+                        <li><a runat="server" href="~/Users/Admin/FeedbackList.aspx">View Feedback</a></li>
+                        <li><a runat="server" href="~/Users/Admin/ContactList.aspx">Contact Queries</a></li>
+                        <li><a runat="server" href="~/Users/Admin/Reports.aspx">Reports</a></li>
+                    </ul>
+
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                <span class="glyphicon glyphicon-user"></span> Hello, Admin <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <asp:LinkButton ID="btnLogout" runat="server" OnClick="btnLogout_Click" CausesValidation="false">
+                                        <span class="glyphicon glyphicon-log-out"></span> Log out
+                                    </asp:LinkButton>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container body-content">
+            <asp:ContentPlaceHolder ID="MainContent" runat="server">
+            </asp:ContentPlaceHolder>
+        </div>
+
+        <footer class="main-footer">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="footer-bottom">
+                            <p>&copy; <%: DateTime.Now.Year %> - Jobify Admin Panel</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </form>
+
+    <script type="text/javascript">
+        function pageLoad(sender, args) {
+            var path = window.location.pathname;
+            path = path.replace(/\/$/, "");
+            path = decodeURIComponent(path);
+
+            $('.navbar-nav a').each(function () {
+                var href = $(this).attr('href');
+                if (path.substring(0, href.length) === href) {
+                    $(this).closest('li').addClass('active');
+                }
+            });
+        }
+    </script>
+
+      <!-- SCRIPT FOR ACTIVE NAV LINK -->
+    <script type="text/javascript">
+        $(function () {
+            var url = window.location.pathname;
+            var page = url.substring(url.lastIndexOf('/') + 1);
+            $('.navbar-nav li a').each(function () {
+                var link = $(this).attr('href');
+                if (link && link.indexOf(page) > -1) {
+                    $(this).parent().addClass('active');
+                }
+            });
+        });
+    </script>
+
+
+    
+</body>
+</html>
